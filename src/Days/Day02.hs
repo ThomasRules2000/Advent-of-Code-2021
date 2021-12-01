@@ -1,7 +1,7 @@
 module Days.Day02 where
 import qualified Program.RunDay as R (runDay)
 
-runDay :: String -> IO (Maybe Double, Maybe Double)
+runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
 
 type Input = [Int]

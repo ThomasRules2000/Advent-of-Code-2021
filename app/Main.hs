@@ -36,7 +36,7 @@ import qualified Days.Day24         as Day24 (runDay)
 import qualified Days.Day25         as Day25 (runDay)
 {- ORMOLU_ENABLE -}
 
-days :: [(String -> IO (Maybe Double, Maybe Double), String)]
+days :: [(String -> IO (Maybe Integer, Maybe Integer), String)]
 days = [
     (Day01.runDay, "input/Day01.txt"),
     (Day02.runDay, "input/Day02.txt"),
@@ -72,12 +72,12 @@ main = do
     times <- Map.fromList . zip toRun <$> mapM (\arg -> uncurry (performDay arg) $ fromMaybe (error $ printf "Day %d not found" arg) $ lookup arg (zip [1..] days)) toRun
     printSummary times
 
-performDay :: Int -> (String -> IO (Maybe Double, Maybe Double)) -> String -> IO (Maybe Double, Maybe Double)
+performDay :: Int -> (String -> IO (Maybe Integer, Maybe Integer)) -> String -> IO (Maybe Integer, Maybe Integer)
 performDay day func file = do
     putStrLn $ printf "===== DAY %d =====" day
     func file
 
-printSummary :: Map Int (Maybe Double, Maybe Double) -> IO ()
+printSummary :: Map Int (Maybe Integer, Maybe Integer) -> IO ()
 printSummary results = do
     putStrLn "====== SUMMARY ======"
     let part1s = Map.mapKeys ((++".1") . show) $ fst <$> results
@@ -85,8 +85,8 @@ printSummary results = do
         parts = Map.toList $ part1s <> part2s
 
         fails = [p | (p, Nothing) <- parts]
-        fasts = [(p, t) | (p, Just t) <- parts, t < 1]
-        slows = [(p, t) | (p, Just t) <- parts, t >= 1]
+        fasts = [(p, t) | (p, Just t) <- parts, t < 10^12]
+        slows = [(p, t) | (p, Just t) <- parts, t >= 10^12]
 
         greatSuccess = null fails && null slows
         nFails = if null fails then "No" else show $ length fails

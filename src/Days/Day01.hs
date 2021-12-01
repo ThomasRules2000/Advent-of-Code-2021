@@ -1,7 +1,7 @@
 module Days.Day01 where
 import qualified Program.RunDay as R (runDay)
 
-runDay :: String -> IO (Maybe Double, Maybe Double)
+runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
 
 type Input = [Int]
@@ -10,7 +10,7 @@ type Output1 = Int
 type Output2 = Int
 
 parser :: String -> Input
-parser = fmap read . lines
+parser = map read . lines
 
 part1 :: Input -> Output1
 part1 = numIncrease
@@ -28,4 +28,4 @@ numIncrease :: [Int] -> Int
 numIncrease xs = length $ filter id $ zipWith (<) xs $ tail xs
 
 part2 :: Input -> Output2
-part2 nums = numIncrease $ zipWith (+) nums $ zipWith (+) (tail nums) $ drop 2 nums
+part2 nums = numIncrease $ zipWith3 (\x -> (+) . (x+)) nums (tail nums) $ drop 2 nums
