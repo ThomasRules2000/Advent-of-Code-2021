@@ -1,19 +1,19 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: dba939b10c985315ab6ed08c416ae4f9fcaf2eaa25dd9deb8e03a09a8f0704c0
+-- hash: f33ca9484fbf149269fa98fb2f25b81067b41c3284595d457d74d955c88c5fc7
 
 name:           Advent-of-Code
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/Cskell#readme>
-homepage:       https://github.com/thomasrules2000/Advent-of-Code#readme
-bug-reports:    https://github.com/thomasrules2000/Advent-of-Code/issues
+homepage:       https://github.com/thomasrules2000/Advent-of-Code-2021#readme
+bug-reports:    https://github.com/thomasrules2000/Advent-of-Code-2021/issues
 author:         Thomas Stacey
 maintainer:     Thomas.Stacey@warwick.ac.uk
-copyright:      2020 Thomas Stacey
+copyright:      2021 Thomas Stacey
 license:        BSD3
 build-type:     Simple
 extra-source-files:
@@ -21,7 +21,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/thomasrules2000/Advent-of-Code
+  location: https://github.com/thomasrules2000/Advent-of-Code-2021
 
 library
   exposed-modules:
@@ -62,15 +62,21 @@ library
       Paths_Advent_of_Code
   hs-source-dirs:
       src
-  default-extensions: ApplicativeDo TupleSections NumericUnderscores TypeSynonymInstances FlexibleInstances ScopedTypeVariables
+  default-extensions:
+      ApplicativeDo
+      TupleSections
+      NumericUnderscores
+      TypeSynonymInstances
+      FlexibleInstances
+      ScopedTypeVariables
   build-depends:
       base >=4.7 && <5
-    , containers ==0.6.0.1
+    , containers
     , deepseq
-    , extra ==1.6.18
-    , matrix ==0.3.6.1
-    , split >=0.2.3
-    , vector ==0.12.0.3
+    , extra
+    , matrix
+    , split
+    , vector
   default-language: Haskell2010
 
 executable AOC-exe
@@ -83,10 +89,10 @@ executable AOC-exe
   build-depends:
       Advent-of-Code
     , base >=4.7 && <5
-    , containers ==0.6.0.1
+    , containers
     , deepseq
-    , extra ==1.6.18
-    , matrix ==0.3.6.1
-    , split >=0.2.3
-    , vector ==0.12.0.3
+    , extra
+    , matrix
+    , split
+    , vector
   default-language: Haskell2010
