@@ -4,11 +4,11 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f33ca9484fbf149269fa98fb2f25b81067b41c3284595d457d74d955c88c5fc7
+-- hash: f250c5259ac9834bc7eb68b6ae01b613b46f8a291650c5dc95b38d94c5d4379b
 
 name:           Advent-of-Code
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/Cskell#readme>
+description:    Please see the README on GitHub at <https://github.com/thomasrules2000/Advent-of-Code-2021#readme>
 homepage:       https://github.com/thomasrules2000/Advent-of-Code-2021#readme
 bug-reports:    https://github.com/thomasrules2000/Advent-of-Code-2021/issues
 author:         Thomas Stacey
@@ -69,6 +69,8 @@ library
       TypeSynonymInstances
       FlexibleInstances
       ScopedTypeVariables
+      DeriveGeneric
+      DeriveAnyClass
   build-depends:
       base >=4.7 && <5
     , containers

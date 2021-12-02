@@ -36,6 +36,8 @@ library:
     - TypeSynonymInstances
     - FlexibleInstances
     - ScopedTypeVariables
+    - DeriveGeneric
+    - DeriveAnyClass 
 
 executables:
   AOC-exe:
