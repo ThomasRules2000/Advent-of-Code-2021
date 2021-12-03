@@ -17,3 +17,10 @@ insertAfter after toInsert (l:ls)
 rotate :: Int -> [a] -> [a]
 rotate _ [] = []
 rotate n xs = zipWith const (drop n (cycle xs)) xs
+
+binToDec :: [Bool] -> Int
+binToDec = go . reverse
+    where
+        go :: [Bool] -> Int
+        go [] = 0
+        go (x:xs) = fromEnum x + 2 * go xs
