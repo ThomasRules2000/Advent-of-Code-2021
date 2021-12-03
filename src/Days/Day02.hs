@@ -1,8 +1,9 @@
 module Days.Day02 where
 import qualified Program.RunDay  as R (runDay)
 
-import           Control.DeepSeq
-import           Data.Bifunctor
+import           Control.DeepSeq (NFData)
+import           Data.Bifunctor  (first, second)
+import           Data.Foldable   (foldl')
 import           GHC.Generics    (Generic)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
@@ -30,7 +31,7 @@ getMove _ = error "Too many words"
 
 
 part1 :: Input -> Output1
-part1 = uncurry (*) . foldl (flip updatePosition) (0,0)
+part1 = uncurry (*) . foldl' (flip updatePosition) (0,0)
 
 updatePosition :: Move -> (Int, Int) -> (Int, Int)
 updatePosition (Forward n) = first (+n)
@@ -38,7 +39,7 @@ updatePosition (Down n)    = second (+n)
 
 
 part2 :: Input -> Output2
-part2 = uncurry (*) . snd . foldl (flip updatePosition2) (0, (0, 0))
+part2 = uncurry (*) . snd . foldl' (flip updatePosition2) (0, (0, 0))
 
 updatePosition2 :: Move -> (Int, (Int, Int)) -> (Int, (Int, Int))
 updatePosition2 (Down n) (aim, pos)       = (aim + n, pos)

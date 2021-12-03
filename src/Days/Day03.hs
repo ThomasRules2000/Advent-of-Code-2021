@@ -16,10 +16,10 @@ parser = map (map (=='1')) . lines
 
 
 part1 :: Input -> Output1
-part1 xs = binToDec gr * binToDec er
+part1 xs = binToDec gamma * binToDec epsilon
     where
-        gr = map mostCommon $ transpose xs
-        er = map not gr
+        gamma   = mostCommon <$> transpose xs
+        epsilon = not <$> gamma
 
 
 mostCommon :: [Bool] -> Bool
@@ -33,7 +33,7 @@ part2 xs = binToDec oxyRating * binToDec co2Rating
         co2Rating = oxyCo2Rate False xs
 
 oxyCo2Rate :: Bool -> [[Bool]] -> [Bool]
-oxyCo2Rate _ [xs] = xs
-oxyCo2Rate b xs = mc : oxyCo2Rate b (map tail $ filter ((==mc) . head) xs)
+oxyCo2Rate _ [x] = x
+oxyCo2Rate b xs = mc : oxyCo2Rate b (tail <$> filter ((==mc) . head) xs)
     where
         mc = (b ==) $ mostCommon $ map head xs
