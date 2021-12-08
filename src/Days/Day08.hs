@@ -10,7 +10,7 @@ import           Util.Util
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
 
-type Input = ([([Set Char], [Set Char])])
+type Input = [([Set Char], [Set Char])]
 
 type Output1 = Int
 type Output2 = Int
@@ -42,7 +42,7 @@ getNumMappings ss = Map.fromList [(zero, 0), (one, 1), (two, 2), (three, 3), (fo
         eight = getOneOfLength 7 ss
         three = head $ filter (\s -> (Set.size s == 5) && seven `Set.isSubsetOf` s) ss
         nine  = head $ filter (\s -> (Set.size s == 6) && four `Set.isSubsetOf` s) ss
-        zero  = head $ filter (\s -> (Set.size s == 6) && seven `Set.isSubsetOf` s && not (s == nine)) ss
-        six   = head $ filter (\s -> (Set.size s == 6) && not (s `elem` [nine, zero])) ss
+        zero  = head $ filter (\s -> (Set.size s == 6) && seven `Set.isSubsetOf` s && (s /= nine)) ss
+        six   = head $ filter (\s -> (Set.size s == 6) && (s `notElem` [nine, zero])) ss
         five  = head $ filter (\s -> (Set.size s == 5) && s `Set.isSubsetOf` six) ss
-        two   = head $ filter (\s -> (Set.size s == 5) && not (s `elem` [three, five])) ss
+        two   = head $ filter (\s -> (Set.size s == 5) && (s `notElem` [three, five])) ss
