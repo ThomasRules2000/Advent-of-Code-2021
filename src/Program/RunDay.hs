@@ -14,14 +14,14 @@ runDay parser part1 part2 s = do
         Right input -> do          
             parserStart <- getCPUTime
             parserEnd <- input `deepseq` getCPUTime
-            let parserTime = (parserEnd - parserStart)
+            let parserTime = parserEnd - parserStart
             putStrLn $ "Parser " ++ timeString parserTime
             
             p1Start <- getCPUTime
             p1Res <- catch (return $ Just (part1 input)) $ \(e :: SomeException) -> print e >> return Nothing
             p1End <- p1Res `deepseq` getCPUTime
 
-            let p1Time = (p1End - p1Start)
+            let p1Time = p1End - p1Start
             putStrLn $ "Part 1 " ++ timeString p1Time ++ ":"
             putStrLn $ maybe "Unable to run Part 1!" show p1Res
 
@@ -29,7 +29,7 @@ runDay parser part1 part2 s = do
             p2Res <- catch (return $ Just (part2 input)) $ \(e :: SomeException) -> print e >> return Nothing
             p2End <- p2Res `deepseq` getCPUTime
 
-            let p2Time = (p2End - p2Start)
+            let p2Time = p2End - p2Start
             putStrLn $ printf "Part 2 " ++ timeString p2Time ++ ":"
             putStrLn $ maybe "Unable to run Part 2!" show p2Res
 
@@ -38,8 +38,8 @@ runDay parser part1 part2 s = do
 
 timeString :: Integer -> String
 timeString t
-    | t > 10^11 = printf "(%.2fs)"  $ (fromIntegral t / (10^12) :: Double)
-    | t > 10^8  = printf "(%.2fms)" $ (fromIntegral t / (10^9)  :: Double)
-    | t > 10^5  = printf "(%.2fμs)" $ (fromIntegral t / (10^6)  :: Double)
-    | t > 100   = printf "(%.2fns)" $ (fromIntegral t / (10^3)  :: Double)
+    | t > 10^11 = printf "(%.2fs)"  (fromIntegral t / (10^12) :: Double)
+    | t > 10^8  = printf "(%.2fms)" (fromIntegral t / (10^9)  :: Double)
+    | t > 10^5  = printf "(%.2fμs)" (fromIntegral t / (10^6)  :: Double)
+    | t > 100   = printf "(%.2fns)" (fromIntegral t / (10^3)  :: Double)
     | otherwise = printf "(%dps)" t

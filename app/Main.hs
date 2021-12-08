@@ -102,4 +102,4 @@ printSummary results = do
             putStrLn $ "    " ++ intercalate ", " fails
         unless (null slows) $ do
             putStrLn $ printf "  %s parts took longer than 1s" nSlows
-            putStrLn $ "    " ++ intercalate ", " (map (uncurry (printf "%s (%.2fs)")) slows)
+            putStrLn $ "    " ++ intercalate ", " (map (uncurry (printf "%s (%.2fs)")) $ fmap ((/10^12) . fromIntegral :: Integer -> Double) <$> slows)

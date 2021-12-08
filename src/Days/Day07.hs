@@ -1,5 +1,6 @@
 module Days.Day07 where
 import qualified Program.RunDay as R (runDay)
+import Data.List.Split
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
@@ -10,10 +11,16 @@ type Output1 = Int
 type Output2 = Int
 
 parser :: String -> Input
-parser = undefined
+parser = map read . splitOn ","
 
 part1 :: Input -> Output1
-part1 nums = undefined
+part1 subs = minimum $ map (`fuelCost` subs) [minimum subs .. maximum subs]
+    where
+        fuelCost :: Int -> [Int] -> Int
+        fuelCost pos = sum . map (abs . subtract pos)
 
 part2 :: Input -> Output2
-part2 nums = undefined
+part2 subs = minimum $ map (`fuelCost` subs) [minimum subs .. maximum subs]
+    where
+        fuelCost :: Int -> [Int] -> Int
+        fuelCost pos = sum . map ((\x -> x * (x+1) `div` 2) . abs . subtract pos)
