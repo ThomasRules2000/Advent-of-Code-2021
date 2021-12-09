@@ -26,6 +26,7 @@ dependencies:
 - matrix
 - extra
 - deepseq
+- unordered-containers
 
 library:
   source-dirs: src
@@ -37,7 +38,8 @@ library:
     - FlexibleInstances
     - ScopedTypeVariables
     - DeriveGeneric
-    - DeriveAnyClass 
+    - DeriveAnyClass
+    - LambdaCase 
 
 executables:
   AOC-exe:

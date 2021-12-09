@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f250c5259ac9834bc7eb68b6ae01b613b46f8a291650c5dc95b38d94c5d4379b
+-- hash: 1fe3fe4de2a5aa7880512ce824b1cc9724863d25e66a9ea1c2ddce229910f029
 
 name:           Advent-of-Code
 version:        0.1.0.0
@@ -71,6 +71,7 @@ library
       ScopedTypeVariables
       DeriveGeneric
       DeriveAnyClass
+      LambdaCase
   build-depends:
       base >=4.7 && <5
     , containers
@@ -78,6 +79,7 @@ library
     , extra
     , matrix
     , split
+    , unordered-containers
     , vector
   default-language: Haskell2010
 
@@ -96,5 +98,6 @@ executable AOC-exe
     , extra
     , matrix
     , split
+    , unordered-containers
     , vector
   default-language: Haskell2010
