@@ -19,8 +19,10 @@ type Output2 = Int
 type CharPair = (Char, Char)
 
 parser :: String -> Input
-parser = fmap
-            (Map.mapWithKey getExps . Map.fromList . map (bimap listToTuple head . listToTuple  . splitOn " -> ") . lines)
+parser = fmap ( Map.mapWithKey getExps 
+              . Map.fromList 
+              . map (bimap listToTuple head . listToTuple  . splitOn " -> ") 
+              . lines)
        . listToTuple
        . splitOn "\n\n"
 
@@ -38,14 +40,13 @@ step exps = Map.unionsWith (+) . Map.elems . Map.mapWithKey expand
 
 ansAfterIters :: Int -> Input -> Int
 ansAfterIters n (inp, reps) = maximum end - minimum end
-    where 
-        end = Map.insertWith (+) (last inp) 1 
-            $ Map.mapKeysWith (+) fst 
-            $ (!!n) 
-            $ iterate (step reps) 
-            $ Map.fromListWith (+) 
-            $ map (,1) 
-            $ zip inp $ tail inp
+    where end = Map.insertWith (+) (last inp) 1 
+              $ Map.mapKeysWith (+) fst 
+              $ (!! n) 
+              $ iterate (step reps) 
+              $ Map.fromListWith (+) 
+              $ map (, 1) 
+              $ zip inp $ tail inp
 
 part2 :: Input -> Output2
 part2 = ansAfterIters 40
