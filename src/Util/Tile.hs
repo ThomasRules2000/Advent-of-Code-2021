@@ -5,6 +5,7 @@ import           Data.Set    (Set)
 import qualified Data.Set    as Set
 import           Data.Vector (Vector)
 import qualified Data.Vector as Vec
+import           Util.Util
 
 data Tile = Tile {
   tileNum    :: Int,
@@ -17,12 +18,6 @@ instance Show Tile where
 instance Ord Tile where
   t1 <= t2 = tileNum t1 <= tileNum t2
 
-boolChar :: Bool -> Char
-boolChar True  = '#'
-boolChar False = '.'
-
-ppMatrix :: Matrix Bool -> String
-ppMatrix matrix = unlines (Matrix.toLists (boolChar <$> matrix))
 
 getTop :: Tile -> Vector Bool
 getTop = Matrix.getRow 1 . tileMatrix

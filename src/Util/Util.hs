@@ -3,6 +3,8 @@ import           Data.Bifunctor  (first)
 import           Data.Foldable   (foldl')
 import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
+import           Data.Matrix     (Matrix)
+import qualified Data.Matrix     as Matrix
 
 listToTuple :: [a] -> (a,a)
 listToTuple [x,y] = (x,y)
@@ -38,3 +40,10 @@ gridToMap = Map.fromList
        . concat
        . zipWith (\x -> map $ first (x,)) [0..]
        . map (zip [0..])
+
+boolChar :: Bool -> Char
+boolChar True  = '█'
+boolChar False = ' '
+
+ppMatrix :: Matrix Bool -> String
+ppMatrix matrix = unlines (Matrix.toLists (boolChar <$> matrix))
