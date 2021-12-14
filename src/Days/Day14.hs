@@ -40,8 +40,8 @@ step exps = Map.unionsWith (+) . Map.elems . Map.mapWithKey expand
 
 ansAfterIters :: Int -> Input -> Int
 ansAfterIters n (inp, reps) = maximum end - minimum end
-    where end = Map.insertWith (+) (last inp) 1 
-              $ Map.mapKeysWith (+) fst 
+    where end = Map.insertWith (+) (head inp) 1 
+              $ Map.mapKeysWith (+) snd 
               $ (!! n) 
               $ iterate (step reps) 
               $ Map.fromListWith (+) 
