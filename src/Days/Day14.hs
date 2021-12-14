@@ -40,7 +40,8 @@ ansAfterIters :: Int -> Input -> Int
 ansAfterIters n (inp, reps) = maximum end - minimum end
     where 
         end = Map.insertWith (+) (last inp) 1 
-            $ Map.mapKeysWith (+) fst $ (!!n) 
+            $ Map.mapKeysWith (+) fst 
+            $ (!!n) 
             $ iterate (step reps) 
             $ Map.fromListWith (+) 
             $ map (,1) 
