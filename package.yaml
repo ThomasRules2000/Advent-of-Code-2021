@@ -24,6 +24,7 @@ dependencies:
 - split
 - vector
 - matrix
+- heap
 - extra
 - deepseq
 - unordered-containers
