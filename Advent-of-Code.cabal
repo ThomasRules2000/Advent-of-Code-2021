@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8b8262e76ff484c1602d3c80cda47bfdfcbf1c06c7bb3a5f476b369170eca954
+-- hash: a9e31002a809d7be180683383a3b5204d3948a38c8ee1f897eee3f5950319d86
 
 name:           Advent-of-Code
 version:        0.1.0.0
@@ -51,6 +51,7 @@ library
       Days.Day24
       Days.Day25
       Program.RunDay
+      Util.BinTree
       Util.Coord
       Util.Field
       Util.HexTile
@@ -72,6 +73,8 @@ library
       DeriveGeneric
       DeriveAnyClass
       LambdaCase
+      DeriveFunctor
+      DeriveFoldable
   build-depends:
       base >=4.7 && <5
     , containers
@@ -79,6 +82,7 @@ library
     , extra
     , heap
     , matrix
+    , mtl
     , split
     , unordered-containers
     , vector
@@ -99,6 +103,7 @@ executable AOC-exe
     , extra
     , heap
     , matrix
+    , mtl
     , split
     , unordered-containers
     , vector

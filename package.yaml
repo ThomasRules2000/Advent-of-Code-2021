@@ -28,6 +28,7 @@ dependencies:
 - extra
 - deepseq
 - unordered-containers
+- mtl
 
 library:
   source-dirs: src
@@ -41,6 +42,8 @@ library:
     - DeriveGeneric
     - DeriveAnyClass
     - LambdaCase 
+    - DeriveFunctor
+    - DeriveFoldable
 
 executables:
   AOC-exe:
