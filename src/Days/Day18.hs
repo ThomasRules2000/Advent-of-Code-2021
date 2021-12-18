@@ -1,8 +1,11 @@
 module Days.Day18 where
-import           Data.Bifunctor (first)
-import           Data.Char      (digitToInt, isDigit)
-import qualified Program.RunDay as R (runDay)
-import           Util.BinTree   (BinTree (..), maxDepth, applyLeft, applyRight)
+import           Control.Monad.State
+import           Data.Bifunctor      (first, second)
+import           Data.Char           (digitToInt, isDigit)
+import           Data.Functor        (($>))
+import qualified Program.RunDay      as R (runDay)
+import           Util.BinTree        (BinTree (..), applyLeft, applyRight,
+                                      maxDepth)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
@@ -36,33 +39,47 @@ addSnailFish l r = reduce $ Node l r
 
 reduce :: SnailFish -> SnailFish
 reduce sf
-    | maxDepth sf > 4 = reduce $ fst $ explode 4 sf
-    | any (>=10) sf   = reduce $ fst $ split sf
+    | maxDepth sf > 4 = reduce $ evalState (explode 4 sf) $ ExplodeData False Nothing Nothing
+    | any (>=10) sf   = reduce $ evalState (split sf) False
     | otherwise       = sf
 
-explode :: Int -> SnailFish -> (SnailFish, (Bool, (Maybe Int, Maybe Int)))
-explode _ l@(Leaf _) = (l, (False, (Nothing, Nothing)))
-explode n sf@(Node (Leaf l) (Leaf r))
-    | n <= 0    = (Leaf 0, (True,  (Just l,  Just r)))
-    | otherwise = (sf,     (False, (Nothing, Nothing)))
-explode n sf@(Node l r)
-    | leftExp   = (Node newL (maybe r ((`applyLeft` r) . (+)) lRAdd),  (True,  (lLAdd,   Nothing)))
-    | rightExp  = (Node (maybe l ((`applyRight` l) . (+)) rLAdd) newR, (True,  (Nothing, rRAdd  )))
-    | otherwise = (sf,                                                 (False, (Nothing, Nothing)))
-    where
-        (newL, (leftExp,  (lLAdd, lRAdd))) = explode (n-1) l
-        (newR, (rightExp, (rLAdd, rRAdd))) = explode (n-1) r
+data ExplodeData = ExplodeData {
+    exploded :: Bool,
+    lVal     :: Maybe Int,
+    rVal     :: Maybe Int
+}
 
-split :: SnailFish -> (SnailFish, Bool)
+explode :: Int -> SnailFish -> State ExplodeData SnailFish
+explode _ l@(Leaf _) = return l
+explode n sf@(Node (Leaf l) (Leaf r))
+    | n <= 0 = put ExplodeData {exploded=True, lVal=Just l, rVal=Just r} $> Leaf 0
+    | otherwise = return sf
+explode n sf@(Node l r) = do
+    newL <- explode (n-1) l
+    ExplodeData{..} <- get
+    if exploded then
+        modify (\ed -> ed{rVal=Nothing})
+        $> Node newL (maybe r ((`applyLeft` r) . (+)) rVal)
+    else do
+        newR <- explode (n-1) r
+        ExplodeData{..} <- get
+        if exploded then
+            modify (\ed -> ed{lVal=Nothing})
+            $> Node (maybe l ((`applyRight` l) . (+)) lVal) newR
+        else return sf
+
+
+split :: SnailFish -> State Bool SnailFish
 split leaf@(Leaf x)
-    | x >= 10 = (,True) $ if even x then Node l l else Node l r
-    | otherwise = (leaf, False)
-    where
-        l = Leaf $ x `div` 2
-        r = Leaf $ 1 + (x `div` 2)
-split (Node l r) = case split l of
-    (sf, True) -> (Node sf r, True)
-    _          -> first (Node l) $ split r
+    | x >= 10 = put True $> Node (floor <$> n) (ceiling <$> n)
+    | otherwise = return leaf
+    where n = Leaf $ fromIntegral x / 2
+split (Node l r) = do
+    newL <- split l
+    get >>= \case
+        True  -> return $ Node newL r
+        False -> Node l <$> split r
+
 
 magnitude :: SnailFish -> Int
 magnitude (Leaf x)   = x

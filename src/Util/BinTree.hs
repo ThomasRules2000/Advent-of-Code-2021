@@ -4,7 +4,11 @@ import           GHC.Generics    (Generic)
 
 data BinTree a = Node (BinTree a) (BinTree a)
                | Leaf a
-               deriving (Eq, Ord, Show, Generic, NFData, Functor, Foldable)
+               deriving (Eq, Ord, Generic, NFData, Functor, Foldable)
+
+instance Show a => Show (BinTree a) where
+    show (Leaf x) = show x 
+    show (Node x y) = concat ["[", show x, ",", show y, "]"] 
 
 -- Get the maximum depth of the tree
 maxDepth :: BinTree a -> Int

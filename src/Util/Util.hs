@@ -9,6 +9,7 @@ import qualified Data.Matrix     as Matrix
 import           Data.Maybe      (fromJust, isJust)
 import           Data.Set        (Set)
 import qualified Data.Set        as Set
+import           Debug.Trace     (trace)
 
 listToTuple :: [a] -> (a,a)
 listToTuple [x,y] = (x,y)
@@ -80,3 +81,6 @@ ppMatrix matrix = unlines (Matrix.toLists (boolChar <$> matrix))
 
 catMaybesSet :: Ord a => Set (Maybe a) -> Set a
 catMaybesSet = Set.map fromJust . Set.filter isJust
+
+traceTag :: Show a => String -> a -> a
+traceTag s x = trace (s <> show x) x
