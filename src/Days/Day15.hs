@@ -10,7 +10,7 @@ import           Data.Set        (Set)
 import qualified Data.Set        as Set
 import           Data.Tuple      (swap)
 import qualified Program.RunDay  as R (runDay)
-import           Util.Util       (gridToMap)
+import qualified Util.Map        as Map
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
@@ -23,7 +23,7 @@ type Output1 = Int
 type Output2 = Int
 
 parser :: String -> Input
-parser = gridToMap . map (map digitToInt) . lines
+parser = Map.gridToMap . map (map digitToInt) . lines
 
 part1 :: Input -> Output1
 part1 = runDijkstra

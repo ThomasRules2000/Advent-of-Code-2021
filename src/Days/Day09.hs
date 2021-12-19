@@ -8,7 +8,7 @@ import           Data.Maybe      (catMaybes, mapMaybe)
 import           Data.Set        (Set)
 import qualified Data.Set        as Set
 import qualified Program.RunDay  as R (runDay)
-import           Util.Util       (gridToMap)
+import qualified Util.Map        as Map
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
@@ -21,7 +21,7 @@ type Output1 = Int
 type Output2 = Int
 
 parser :: String -> Input
-parser = gridToMap
+parser = Map.gridToMap
        . map (map digitToInt)
        . lines
 

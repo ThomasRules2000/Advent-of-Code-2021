@@ -1,9 +1,13 @@
 module Util.Set where
--- A couple of useful digraphs for union and intersection
-import           Data.Set (Set, intersection, union)
+import           Data.Maybe (fromJust, isJust)
+import           Data.Set   (Set)
+import qualified Data.Set   as Set
 
 (\/) :: Ord a => Set a -> Set a -> Set a
-(\/) = union
+(\/) = Set.union
 
 (/\) :: Ord a => Set a -> Set a -> Set a
-(/\) = intersection
+(/\) = Set.intersection
+
+catMaybes :: Ord a => Set (Maybe a) -> Set a
+catMaybes = Set.map fromJust . Set.filter isJust

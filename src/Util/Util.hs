@@ -20,9 +20,6 @@ listToTuple3 [x, y, z] = (x, y, z)
 trimap :: (a -> a') -> (b -> b') -> (c -> c') -> (a, b, c) -> (a', b', c')
 trimap f g h (x, y, z) = (f x, g y, h z)
 
-containsKeys :: Ord k => Map k v -> [k] -> Bool
-containsKeys m = all (`Map.member` m)
-
 insertAfter :: Eq a => a -> [a] -> [a] -> [a]
 insertAfter _ toInsert [] = toInsert
 insertAfter after toInsert (l:ls)
@@ -72,21 +69,12 @@ hexToBin = concatMap (go . toLower)
     go 'f' = [True,  True,  True,  True ]
     go  c  = []
 
-gridToMap :: [[a]] -> Map (Int, Int) a
-gridToMap = Map.fromList
-       . concat
-       . zipWith (\x -> map $ first (x,)) [0..]
-       . map (zip [0..])
-
 boolChar :: Bool -> Char
 boolChar True  = '█'
 boolChar False = ' '
 
 ppMatrix :: Matrix Bool -> String
 ppMatrix matrix = unlines (Matrix.toLists (boolChar <$> matrix))
-
-catMaybesSet :: Ord a => Set (Maybe a) -> Set a
-catMaybesSet = Set.map fromJust . Set.filter isJust
 
 traceTag :: Show a => String -> a -> a
 traceTag s x = trace (s <> show x) x

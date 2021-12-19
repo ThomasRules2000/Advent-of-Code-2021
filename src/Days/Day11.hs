@@ -6,7 +6,6 @@ import qualified Data.Map.Strict as Map
 import           Data.Set        (Set)
 import qualified Data.Set        as Set
 import qualified Program.RunDay  as R (runDay)
-import           Util.Util       (gridToMap)
 import qualified Util.Map as Map
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
@@ -20,7 +19,7 @@ type Output1 = Int
 type Output2 = Int
 
 parser :: String -> Input
-parser = gridToMap . map (map digitToInt) . lines
+parser = Map.gridToMap . map (map digitToInt) . lines
 
 part1 :: Input -> Output1
 part1 = fst . (!!100) . iterate (\(n, m) -> first (+n) $ doCycle m) . (0,)
