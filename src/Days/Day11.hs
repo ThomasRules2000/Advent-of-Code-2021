@@ -7,6 +7,7 @@ import           Data.Set        (Set)
 import qualified Data.Set        as Set
 import qualified Program.RunDay  as R (runDay)
 import           Util.Util       (gridToMap)
+import qualified Util.Map as Map
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
@@ -29,7 +30,7 @@ doCycle = getFlashes Set.empty . fmap (+1)
 
 getFlashes :: Set Pos -> Map Pos Int -> (Int, Map Pos Int)
 getFlashes flashes octos
-    | null newFlashes = (Set.size flashes, Map.union (Map.fromSet (const 0) flashes) octos)
+    | null newFlashes = (Set.size flashes, Map.fromSet (const 0) flashes Map./\ octos)
     | otherwise = getFlashes (Set.union flashes newFlashes) $ foldl flash octos newFlashes
     where
         newFlashes = Map.keysSet (Map.filter (>9) octos) Set.\\ flashes

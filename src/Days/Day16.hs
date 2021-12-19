@@ -29,7 +29,7 @@ data PacketType = Sum
                 deriving (Eq, Ord, Show, Enum, Generic, NFData)
 
 parser :: String -> Input
-parser = fst . readPacket . hexToBin
+parser = fst . readPacket . hexToBin . head . lines
 
 readPacket :: [Bool] -> (Packet, [Bool])
 readPacket packet

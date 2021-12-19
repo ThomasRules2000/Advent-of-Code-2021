@@ -1,11 +1,11 @@
 module Days.Day08 where
-import           Data.List.Split
+import           Data.List.Split (splitOn)
 import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
-import           Data.Set (Set)
-import qualified Data.Set as Set
-import qualified Program.RunDay as R (runDay)
-import           Util.Util
+import           Data.Set        (Set)
+import qualified Data.Set        as Set
+import qualified Program.RunDay  as R (runDay)
+import           Util.Util       (listToTuple)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2

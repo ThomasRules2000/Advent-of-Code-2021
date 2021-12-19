@@ -1,13 +1,9 @@
 module Days.Day05 where
-import           Control.DeepSeq (NFData)
-import           Data.List.Split
-import           Data.Map        (Map)
+import           Data.List.Split (splitOn)
+import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
-import           Data.Set        (Set)
-import qualified Data.Set        as Set
-import           GHC.Generics    (Generic)
 import qualified Program.RunDay  as R (runDay)
-import           Util.Util
+import           Util.Util       (listToTuple)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
@@ -19,26 +15,31 @@ type Output2 = Int
 
 type Point = (Int, Int)
 
-data Line = Line Point Point
-    deriving (Eq, Ord, Show, Generic, NFData)
+type Line = (Point, Point)
 
 parser :: String -> Input
-parser = map (uncurry Line . listToTuple . map (listToTuple . map read . splitOn ",") . splitOn " -> ") . lines
+parser = map (listToTuple . map (listToTuple . map read . splitOn ",") . splitOn " -> ") . lines
 
 part1 :: Input -> Output1
 part1 = overlaps
-      . filter (\(Line (x1, y1) (x2, y2)) -> x1 == x2 || y1 == y2)
+      . filter (\((x1, y1), (x2, y2)) -> x1 == x2 || y1 == y2)
 
 overlaps :: [Line] -> Int
 overlaps = Map.size
-         . Map.filter (>1) 
-         . Map.unionsWith (+) 
-         . map (Map.fromSet (const 1) . points) 
+         . Map.filter (>1)
+         . Map.unionsWith (+)
+         . map (Map.fromList . map (,1) . points)
 
-points :: Line -> Set Point
-points (Line p1@(x1, y1) p2@(x2, y2))
-    | p1 == p2 = Set.singleton p1
-    | otherwise = Set.fromList $ zip xs ys
+-- overlaps :: [Line] -> Int
+-- overlaps = Map.size
+--          . Map.filter (>1)
+--          . foldr (uncurry (Map.insertWith (+)) . (,1)) Map.empty
+--          . concatMap points
+
+points :: Line -> [Point]
+points (p1@(x1, y1), p2@(x2, y2))
+    | p1 == p2  = [p1]
+    | otherwise = zip xs ys
     where
         xs = [x1, x1 + signum (x2 - x1) .. x2]
         ys = [y1, y1 + signum (y2 - y1) .. y2]

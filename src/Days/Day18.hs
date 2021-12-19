@@ -1,5 +1,5 @@
 module Days.Day18 where
-import           Control.Monad.State
+import           Control.Monad.State (State, evalState, get, modify, put)
 import           Data.Bifunctor      (first, second)
 import           Data.Char           (digitToInt, isDigit)
 import           Data.Functor        (($>))

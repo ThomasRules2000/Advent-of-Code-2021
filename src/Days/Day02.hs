@@ -1,10 +1,9 @@
 module Days.Day02 where
-import qualified Program.RunDay  as R (runDay)
-
 import           Control.DeepSeq (NFData)
 import           Data.Bifunctor  (first, second)
 import           Data.Foldable   (foldl')
 import           GHC.Generics    (Generic)
+import qualified Program.RunDay  as R (runDay)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2

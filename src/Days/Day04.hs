@@ -1,6 +1,6 @@
 module Days.Day04 where
 import           Data.List       (transpose)
-import           Data.List.Split
+import           Data.List.Split (splitOn)
 import qualified Program.RunDay  as R (runDay)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
