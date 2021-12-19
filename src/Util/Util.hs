@@ -11,8 +11,14 @@ import           Data.Set        (Set)
 import qualified Data.Set        as Set
 import           Debug.Trace     (trace)
 
-listToTuple :: [a] -> (a,a)
-listToTuple [x,y] = (x,y)
+listToTuple :: [a] -> (a, a)
+listToTuple [x,y] = (x, y)
+
+listToTuple3 :: [a] -> (a, a, a)
+listToTuple3 [x, y, z] = (x, y, z)
+
+trimap :: (a -> a') -> (b -> b') -> (c -> c') -> (a, b, c) -> (a', b', c')
+trimap f g h (x, y, z) = (f x, g y, h z)
 
 containsKeys :: Ord k => Map k v -> [k] -> Bool
 containsKeys m = all (`Map.member` m)
