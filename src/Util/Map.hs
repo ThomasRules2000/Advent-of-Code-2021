@@ -13,7 +13,7 @@ containsKeys :: Ord k => Map k v -> [k] -> Bool
 containsKeys m = all (`Map.member` m)
 
 fromGrid :: [[a]] -> Map (Int, Int) a
-fromGrid = Map.fromList
+fromGrid = Map.fromAscList
          . concat
          . zipWith (\x -> map $ first (x,)) [0..]
          . map (zip [0..])
