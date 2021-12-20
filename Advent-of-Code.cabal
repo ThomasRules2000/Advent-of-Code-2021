@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: a9e31002a809d7be180683383a3b5204d3948a38c8ee1f897eee3f5950319d86
+-- hash: 1f7ae5fa0b2d549964b9853109c3377a84a5887616e8b03e8ff0c726b0866aee
 
 name:           Advent-of-Code
 version:        0.1.0.0
@@ -55,8 +55,10 @@ library
       Util.Coord
       Util.Field
       Util.HexTile
+      Util.Map
       Util.NoQuotes
       Util.Pair
+      Util.Set
       Util.Tile
       Util.Util
   other-modules:
@@ -75,6 +77,7 @@ library
       LambdaCase
       DeriveFunctor
       DeriveFoldable
+      RecordWildCards
   build-depends:
       base >=4.7 && <5
     , containers

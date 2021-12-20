@@ -23,7 +23,7 @@ type Output1 = Int
 type Output2 = Int
 
 parser :: String -> Input
-parser = Map.gridToMap . map (map digitToInt) . lines
+parser = Map.fromGrid . map (map digitToInt) . lines
 
 part1 :: Input -> Output1
 part1 = runDijkstra

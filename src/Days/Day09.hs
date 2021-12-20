@@ -21,7 +21,7 @@ type Output1 = Int
 type Output2 = Int
 
 parser :: String -> Input
-parser = Map.gridToMap
+parser = Map.fromGrid
        . map (map digitToInt)
        . lines
 
