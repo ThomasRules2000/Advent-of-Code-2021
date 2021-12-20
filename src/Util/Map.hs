@@ -12,8 +12,8 @@ import qualified Data.Map.Strict as Map
 containsKeys :: Ord k => Map k v -> [k] -> Bool
 containsKeys m = all (`Map.member` m)
 
-gridToMap :: [[a]] -> Map (Int, Int) a
-gridToMap = Map.fromList
-       . concat
-       . zipWith (\x -> map $ first (x,)) [0..]
-       . map (zip [0..])
+fromGrid :: [[a]] -> Map (Int, Int) a
+fromGrid = Map.fromList
+         . concat
+         . zipWith (\x -> map $ first (x,)) [0..]
+         . map (zip [0..])
