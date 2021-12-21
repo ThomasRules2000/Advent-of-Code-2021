@@ -13,20 +13,20 @@ runDay = R.runDay parser part1 part2
 
 type Player = (Int, Int)
 
-type Input = (Int, Int)
+type Input = (Player, Player)
 
 type Output1 = Int
 type Output2 = Int
 
 parser :: String -> Input
-parser = listToTuple . map (read . last . words) . lines
+parser = both (,0) . listToTuple . map (read . last . words) . lines
 
 part1 :: Input -> Output1
-part1 = uncurry (turn (cycle [1..100]) 0) . both (,0)
+part1 = uncurry (turn (cycle [1..100]) 0)
 
 turn :: [Int] -> Int -> Player -> Player -> Int
-turn die rolls p1@(_, p1Score) p2@(_, p2Score)
-    | p2Score >= 1000 = p1Score * rolls
+turn die rolls p1 p2
+    | snd p2 >= 1000 = snd p1 * rolls
     | otherwise = turn newDie (rolls + 3) p2 $ move p1Roll p1
     where (p1Roll, newDie) = first sum $ splitAt 3 die
 
@@ -35,7 +35,7 @@ move spaces (pos, score) = (newPos, score + newPos)
     where newPos = 1 + (pos + spaces - 1) `mod` 10
 
 part2 :: Input -> Output2
-part2 = uncurry max . flip evalState mempty . uncurry quantumTurn . both (, 0)
+part2 = uncurry max . flip evalState mempty . uncurry quantumTurn
 
 quantumTurn :: Player -> Player -> State (Map (Player, Player) (Int, Int)) (Int, Int)
 quantumTurn p1 p2
