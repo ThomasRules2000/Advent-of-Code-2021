@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1f7ae5fa0b2d549964b9853109c3377a84a5887616e8b03e8ff0c726b0866aee
+-- hash: 8eae0328b3f045d8a3c4457975fda46a1c55be5cc34a968c2b0462e7ffb9a0c8
 
 name:           Advent-of-Code
 version:        0.1.0.0
@@ -61,6 +61,7 @@ library
       Util.Set
       Util.Tile
       Util.Util
+      Util.Zipper
   other-modules:
       Paths_Advent_of_Code
   hs-source-dirs:
@@ -97,7 +98,7 @@ executable AOC-exe
       Paths_Advent_of_Code
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N4 -with-rtsopts=-qa -with-rtsopts=-C0 -funfolding-use-threshold=16 -fexcess-precision -optc-O3 -optc-ffast-math -O2
   build-depends:
       Advent-of-Code
     , base >=4.7 && <5
