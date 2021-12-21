@@ -1,6 +1,8 @@
 module Days.Day04 where
-import           Data.List       (transpose)
+import           Data.Bifunctor  (bimap)
+import           Data.List       (transpose, uncons)
 import           Data.List.Split (splitOn)
+import           Data.Maybe      (fromJust)
 import qualified Program.RunDay  as R (runDay)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
@@ -14,8 +16,7 @@ type Output2 = Int
 type Board = [[(Int, Bool)]]
 
 parser :: String -> Input
-parser inp = (parseNums nums, map parseBoard boards)
-    where nums:boards = splitOn "\n\n" inp
+parser = bimap parseNums (map parseBoard) . fromJust . uncons . splitOn "\n\n"
 
 parseNums :: String -> [Int]
 parseNums = map read . splitOn ","
@@ -28,12 +29,12 @@ part1 = bingo (any checkWin)
 
 bingo :: ([Board] -> Bool) -> ([Int], [Board]) -> Int
 bingo _ ([], _) = error "No winner"
-bingo winCond (n:nums, boards)
-    | winCond newBoards = (n *) $ sum $ map fst $ filter (not . snd) $ concat $ head winners
-    | otherwise = bingo winCond (nums, filter (not . checkWin) newBoards)
+bingo stopCond (n:nums, boards)
+    | stopCond newBoards = (n *) $ sum $ map fst $ filter (not . snd) $ concat $ head winners
+    | otherwise          = bingo stopCond (nums, filter (not . checkWin) newBoards)
     where
         newBoards = map (map (\(x, b) -> (x, b || x == n))) <$> boards
-        winners = filter checkWin newBoards
+        winners   = filter checkWin newBoards
 
 checkWin :: Board -> Bool
 checkWin rows = winBoard rows || winBoard cols
