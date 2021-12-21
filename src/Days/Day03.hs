@@ -1,7 +1,8 @@
 module Days.Day03 where
-import           Data.List      (transpose)
-import qualified Program.RunDay as R (runDay)
-import           Util.Util      (binToDec)
+import           Data.List        (transpose)
+import           Data.Tuple.Extra (both)
+import qualified Program.RunDay   as R (runDay)
+import           Util.Util        (binToDec)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
@@ -21,19 +22,14 @@ part1 xs = binToDec gamma * binToDec epsilon
         gamma   = mostCommon <$> transpose xs
         epsilon = not <$> gamma
 
-
 mostCommon :: [Bool] -> Bool
 mostCommon bs = length (filter id bs) >= length (filter not bs)
 
 
 part2 :: Input -> Output2
-part2 xs = binToDec oxyRating * binToDec co2Rating
-    where
-        oxyRating = oxyCo2Rate True xs
-        co2Rating = oxyCo2Rate False xs
+part2 xs = uncurry (*) $ both (binToDec . o2CO2Rate xs) (True, False)
 
-oxyCo2Rate :: Bool -> [[Bool]] -> [Bool]
-oxyCo2Rate _ [x] = x
-oxyCo2Rate b xs = mc : oxyCo2Rate b (tail <$> filter ((==mc) . head) xs)
-    where
-        mc = (b ==) $ mostCommon $ map head xs
+o2CO2Rate :: [[Bool]] -> Bool -> [Bool]
+o2CO2Rate [x] _ = x
+o2CO2Rate xs  b = mc : o2CO2Rate (tail <$> filter ((==mc) . head) xs) b
+    where mc = (b ==) $ mostCommon $ map head xs
