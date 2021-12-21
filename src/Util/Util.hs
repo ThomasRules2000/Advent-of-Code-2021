@@ -1,5 +1,5 @@
 module Util.Util where
-import           Data.Bifunctor  (first)
+import           Data.Bifunctor  (first, bimap)
 import           Data.Char       (toLower)
 import           Data.Foldable   (foldl')
 import           Data.Map.Strict (Map)
@@ -78,3 +78,6 @@ ppMatrix matrix = unlines (Matrix.toLists (boolChar <$> matrix))
 
 traceTag :: Show a => String -> a -> a
 traceTag s x = trace (s <> show x) x
+
+sumTuples :: (Foldable t, Num a, Num b) => t (a, b) -> (a, b)
+sumTuples = foldl' (uncurry bimap . bimap (+) (+)) (0, 0)
