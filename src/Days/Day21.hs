@@ -1,12 +1,10 @@
 module Days.Day21 where
-import           Control.Monad.State (State, evalState, gets, modify)
-import           Data.Functor        (($>))
-import           Data.Map.Strict     (Map)
-import qualified Data.Map.Strict     as Map
-import           Data.Tuple          (swap)
-import           Data.Tuple.Extra    (both, first)
-import qualified Program.RunDay      as R (runDay)
-import           Util.Util           (listToTuple, sumTuples)
+import           Control.Monad.ST            (runST)
+import           Data.Tuple.Extra            (both, first, swap)
+import           Data.Vector.Unboxed.Mutable (MVector)
+import qualified Data.Vector.Unboxed.Mutable as MVector
+import qualified Program.RunDay              as R (runDay)
+import           Util.Util                   (listToTuple, sumTuples)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
@@ -35,14 +33,25 @@ move spaces (pos, score) = (newPos, score + newPos)
     where newPos = 1 + (pos + spaces - 1) `mod` 10
 
 part2 :: Input -> Output2
-part2 = uncurry max . flip evalState mempty . uncurry quantumTurn
+part2 = uncurry max . quantumTurn
 
-quantumTurn :: Player -> Player -> State (Map (Player, Player) (Int, Int)) (Int, Int)
-quantumTurn p1 p2
-    | snd p2 >= 21 = return (0,1)
-    | otherwise = gets (Map.lookup (p1, p2)) >>= \case
-        Just x -> return x
-        Nothing -> do
-            res <- sumTuples . zipWith (both . (*)) [1,3,6,7,6,3,1] <$> mapM (fmap swap . quantumTurn p2 . flip move p1) [3..9]
-            modify (Map.insert (p1, p2) res)
-            return res
+quantumTurn :: (Player, Player) -> (Int, Int)
+quantumTurn (p1, p2) = runST $ do
+    ref <- MVector.replicate 44100 (-1, -1)
+    let
+        qt p1 p2
+            | snd p2 >= 21 = return (0,1)
+            | otherwise = MVector.unsafeRead ref i >>= \case
+                (-1, _) -> do
+                    res <- sumTuples . zipWith (both . (*)) [1,3,6,7,6,3,1] <$> mapM (fmap swap . qt p2 . flip move p1) [3..9]
+                    MVector.unsafeWrite ref i res
+                    return res
+                t -> return t
+            where i = vecIndex p1 p2
+    qt p1 p2
+
+vecIndex :: Player -> Player -> Int
+vecIndex (p1Pos, p1Score) (p2Pos, p2Score) = (p1Pos - 1) * 21 * 21 * 10
+                                           + (p2Pos - 1) * 21 * 21
+                                           +  p1Score    * 21
+                                           +  p2Score
