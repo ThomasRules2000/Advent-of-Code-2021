@@ -36,7 +36,10 @@ newPixel algo nonDefs def pos = (algo Vector.!) $ binToDec $ (def /=) . (`Set.me
 step :: Vector Bool -> Set Pos -> Bool -> (Set Pos, Bool)
 step algo nonDefs def = (newNonDefs, newDef)
     where
-        newNonDefs = Set.filter ((newDef /=) . newPixel algo nonDefs def) $ Set.unions $ Set.map (Set.fromList . getAround) nonDefs
+        xs = Set.map fst nonDefs
+        ys = Set.map snd nonDefs
+        newNonDefs = Set.filter ((newDef /=) . newPixel algo nonDefs def) 
+                   $ Set.fromList [(x,y) | x <- [Set.findMin xs..Set.findMax xs], y <- [Set.findMin ys..Set.findMax ys]]
         newDef = if def
             then Vector.last algo
             else Vector.head algo
