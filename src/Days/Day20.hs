@@ -1,15 +1,15 @@
 module Days.Day20 where
-import           Data.Bifunctor  (bimap)
-import           Data.List.Split (splitOn)
-import           Data.Map.Strict (Map)
-import qualified Data.Map.Strict as Map
-import           Data.Set        (Set)
-import qualified Data.Set        as Set
-import           Data.Vector     (Vector)
-import qualified Data.Vector     as Vector
-import qualified Program.RunDay  as R (runDay)
-import qualified Util.Map        as Map
-import           Util.Util       (binToDec, listToTuple)
+import           Data.Bifunctor      (bimap)
+import           Data.List.Split     (splitOn)
+import           Data.Map.Strict     (Map)
+import qualified Data.Map.Strict     as Map
+import           Data.Set            (Set)
+import qualified Data.Set            as Set
+import           Data.Vector.Unboxed (Vector)
+import qualified Data.Vector.Unboxed as Vector
+import qualified Program.RunDay      as R (runDay)
+import qualified Util.Map            as Map
+import           Util.Util           (binToDec, listToTuple)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
@@ -38,7 +38,7 @@ step algo nonDefs def = (newNonDefs, newDef)
     where
         xs = Set.map fst nonDefs
         ys = Set.map snd nonDefs
-        newNonDefs = Set.filter ((newDef /=) . newPixel algo nonDefs def) 
+        newNonDefs = Set.filter ((newDef /=) . newPixel algo nonDefs def)
                    $ Set.fromList [(x,y) | x <- [Set.findMin xs-1..Set.findMax xs+1], y <- [Set.findMin ys-1..Set.findMax ys+1]]
         newDef = if def
             then Vector.last algo
