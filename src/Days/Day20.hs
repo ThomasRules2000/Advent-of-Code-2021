@@ -39,7 +39,7 @@ step algo nonDefs def = (newNonDefs, newDef)
         xs = Set.map fst nonDefs
         ys = Set.map snd nonDefs
         newNonDefs = Set.filter ((newDef /=) . newPixel algo nonDefs def) 
-                   $ Set.fromList [(x,y) | x <- [Set.findMin xs..Set.findMax xs], y <- [Set.findMin ys..Set.findMax ys]]
+                   $ Set.fromList [(x,y) | x <- [Set.findMin xs-1..Set.findMax xs+1], y <- [Set.findMin ys-1..Set.findMax ys+1]]
         newDef = if def
             then Vector.last algo
             else Vector.head algo
