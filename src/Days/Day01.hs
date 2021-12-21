@@ -13,19 +13,10 @@ parser :: String -> Input
 parser = map read . lines
 
 part1 :: Input -> Output1
-part1 = numIncrease
+part1 = numIncrease 1
 
--- Explicit Recursion
--- numIncrease :: [Int] -> Int
--- numIncrease [] = 0
--- numIncrease [x] = 0
--- numIncrease (x:y:xs)
---     | x < y = 1 + rest
---     | otherwise = rest
---     where rest = numIncrease (y:xs)
-
-numIncrease :: [Int] -> Int
-numIncrease xs = length $ filter id $ zipWith (<) xs $ tail xs
+numIncrease :: Int -> [Int] -> Int
+numIncrease winSize xs = length $ filter id $ zipWith (<) xs $ drop winSize xs
 
 part2 :: Input -> Output2
-part2 nums = numIncrease $ zipWith3 (\x -> (+) . (x+)) nums (tail nums) $ drop 2 nums
+part2 = numIncrease 3
