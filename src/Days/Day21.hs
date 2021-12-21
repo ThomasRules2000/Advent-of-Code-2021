@@ -37,18 +37,17 @@ part2 = uncurry max . quantumTurn
 
 quantumTurn :: (Player, Player) -> (Int, Int)
 quantumTurn (p1, p2) = runST $ do
-    ref <- MVector.replicate 44100 (-1, -1)
-    let
-        qt p1 p2
+    knowns <- MVector.replicate 44100 (-1, -1)
+    let go p1 p2
             | snd p2 >= 21 = return (0,1)
-            | otherwise = MVector.unsafeRead ref i >>= \case
+            | otherwise = MVector.unsafeRead knowns i >>= \case
                 (-1, _) -> do
-                    res <- sumTuples . zipWith (both . (*)) [1,3,6,7,6,3,1] <$> mapM (fmap swap . qt p2 . flip move p1) [3..9]
-                    MVector.unsafeWrite ref i res
+                    res <- sumTuples . zipWith (both . (*)) [1,3,6,7,6,3,1] <$> mapM (fmap swap . go p2 . flip move p1) [3..9]
+                    MVector.unsafeWrite knowns i res
                     return res
                 t -> return t
             where i = vecIndex p1 p2
-    qt p1 p2
+    go p1 p2
 
 vecIndex :: Player -> Player -> Int
 vecIndex (p1Pos, p1Score) (p2Pos, p2Score) = (p1Pos - 1) * 21 * 21 * 10
