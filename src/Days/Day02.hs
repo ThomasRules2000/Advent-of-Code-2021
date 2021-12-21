@@ -33,7 +33,7 @@ part1 :: Input -> Output1
 part1 = uncurry (*) . foldl' (flip updatePosition) (0,0)
 
 updatePosition :: Move -> (Int, Int) -> (Int, Int)
-updatePosition (Forward n) = first (+n)
+updatePosition (Forward n) = first  (+n)
 updatePosition (Down n)    = second (+n)
 
 
@@ -41,5 +41,5 @@ part2 :: Input -> Output2
 part2 = uncurry (*) . snd . foldl' (flip updatePosition2) (0, (0, 0))
 
 updatePosition2 :: Move -> (Int, (Int, Int)) -> (Int, (Int, Int))
-updatePosition2 (Down n) (aim, pos)       = (aim + n, pos)
+updatePosition2 (Down n)    (aim, pos)    = (aim + n, pos)
 updatePosition2 (Forward n) (aim, (x, y)) = (aim, (x + n, y + (aim * n)))
