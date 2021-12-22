@@ -65,11 +65,72 @@ days = [
     (Day25.runDay, "input/Day25.txt")
     ]
 
+bigDays :: [(String -> IO (Maybe Integer, Maybe Integer), String)]
+bigDays = [
+    (Day01.runDay, "input/Day01_big.txt"),
+    (Day02.runDay, "input/Day02_big.txt"),
+    (Day03.runDay, "input/Day03_big.txt"),
+    (Day04.runDay, "input/Day04_big.txt"),
+    (Day05.runDay, "input/Day05_big.txt"),
+    (Day06.runDay, "input/Day06_big.txt"),
+    (Day07.runDay, "input/Day07_big.txt"),
+    (Day08.runDay, "input/Day08_big.txt"),
+    (Day09.runDay, "input/Day09_big.txt"),
+    (Day10.runDay, "input/Day10_big.txt"),
+    (Day11.runDay, "input/Day11_big.txt"),
+    (Day12.runDay, "input/Day12_big.txt"),
+    (Day13.runDay, "input/Day13_big.txt"),
+    (Day14.runDay, "input/Day14_big.txt"),
+    (Day15.runDay, "input/Day15_big.txt"),
+    (Day16.runDay, "input/Day16_big.txt"),
+    (Day17.runDay, "input/Day17_big.txt"),
+    (Day18.runDay, "input/Day18_big.txt"),
+    (Day19.runDay, "input/Day19_big.txt"),
+    (Day20.runDay, "input/Day20_big.txt"),
+    (Day21.runDay, "input/Day21_big.txt"),
+    (Day22.runDay, "input/Day22_big.txt"),
+    (Day23.runDay, "input/Day23_big.txt"),
+    (Day24.runDay, "input/Day24_big.txt"),
+    (Day25.runDay, "input/Day25_big.txt")
+    ]
+
+testDays :: [(String -> IO (Maybe Integer, Maybe Integer), String)]
+testDays = [
+    (Day01.runDay, "input/Day01_test.txt"),
+    (Day02.runDay, "input/Day02_test.txt"),
+    (Day03.runDay, "input/Day03_test.txt"),
+    (Day04.runDay, "input/Day04_test.txt"),
+    (Day05.runDay, "input/Day05_test.txt"),
+    (Day06.runDay, "input/Day06_test.txt"),
+    (Day07.runDay, "input/Day07_test.txt"),
+    (Day08.runDay, "input/Day08_test.txt"),
+    (Day09.runDay, "input/Day09_test.txt"),
+    (Day10.runDay, "input/Day10_test.txt"),
+    (Day11.runDay, "input/Day11_test.txt"),
+    (Day12.runDay, "input/Day12_test.txt"),
+    (Day13.runDay, "input/Day13_test.txt"),
+    (Day14.runDay, "input/Day14_test.txt"),
+    (Day15.runDay, "input/Day15_test.txt"),
+    (Day16.runDay, "input/Day16_test.txt"),
+    (Day17.runDay, "input/Day17_test.txt"),
+    (Day18.runDay, "input/Day18_test.txt"),
+    (Day19.runDay, "input/Day19_test.txt"),
+    (Day20.runDay, "input/Day20_test.txt"),
+    (Day21.runDay, "input/Day21_test.txt"),
+    (Day22.runDay, "input/Day22_test.txt"),
+    (Day23.runDay, "input/Day23_test.txt"),
+    (Day24.runDay, "input/Day24_test.txt"),
+    (Day25.runDay, "input/Day25_test.txt")
+    ]
+
 main :: IO ()
 main = do
     args <- getArgs
     let toRun = if "-a" `elem` args then [1..25] else mapMaybe readMaybe args
-    times <- Map.fromList . zip toRun <$> mapM (\arg -> uncurry (performDay arg) $ fromMaybe (error $ printf "Day %d not found" arg) $ lookup arg (zip [1..] days)) toRun
+    let ds | "--test" `elem` args = testDays
+           | "--big"  `elem` args = bigDays 
+           | otherwise            = days
+    times <- Map.fromList . zip toRun <$> mapM (\arg -> uncurry (performDay arg) $ fromMaybe (error $ printf "Day %d not found" arg) $ lookup arg (zip [1..] ds)) toRun
     printSummary times
 
 performDay :: Int -> (String -> IO (Maybe Integer, Maybe Integer)) -> String -> IO (Maybe Integer, Maybe Integer)
