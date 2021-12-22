@@ -1,39 +1,39 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module Program.RunDay where
-import           Control.Exception
-import           Data.Functor
+import           Control.Exception (SomeException, evaluate, try)
+import           Data.Either.Extra (eitherToMaybe)
+import           Data.Functor      (($>))
 import           System.CPUTime    (getCPUTime)
-import           Text.Printf
-import Control.DeepSeq
+import           Text.Printf       (printf)
 
-runDay :: (Show out1, Show out2, NFData out1, NFData out2, NFData inp) => (String -> inp) -> (inp -> out1) -> (inp -> out2) -> String -> IO (Maybe Integer, Maybe Integer)
+runDay :: (Show out1, Show out2) => (String -> inp) -> (inp -> out1) -> (inp -> out2) -> String -> IO (Maybe Integer, Maybe Integer)
 runDay parser part1 part2 s = do
-    file <- try $ parser <$> readFile s
+    parserStart <- getCPUTime
+    file <- try $ readFile s >>= (evaluate . parser)
+    parserEnd <- getCPUTime
     case file of
-        Left (e :: SomeException) -> print e >> return (Nothing, Nothing)
-        Right input -> do          
-            parserStart <- getCPUTime
-            parserEnd <- input `deepseq` getCPUTime
+        Left (e :: SomeException) -> putStrLn "Unable to parse input!" >> print e >> return (Nothing, Nothing)
+        Right input -> do
             let parserTime = parserEnd - parserStart
             putStrLn $ "Parser " ++ timeString parserTime
-            
+
             p1Start <- getCPUTime
-            p1Res <- catch (return $ Just (part1 input)) $ \(e :: SomeException) -> print e >> return Nothing
-            p1End <- p1Res `deepseq` getCPUTime
+            p1Res <- try $ evaluate $ part1 input
+            p1End <- getCPUTime
 
             let p1Time = p1End - p1Start
             putStrLn $ "Part 1 " ++ timeString p1Time ++ ":"
-            putStrLn $ maybe "Unable to run Part 1!" show p1Res
+            putStrLn $ either (\(e :: SomeException) -> "Unable to run Part 1!\n" ++ show e) show p1Res
 
             p2Start <- getCPUTime
-            p2Res <- catch (return $ Just (part2 input)) $ \(e :: SomeException) -> print e >> return Nothing
-            p2End <- p2Res `deepseq` getCPUTime
+            p2Res <- try (evaluate (part2 input))
+            p2End <- getCPUTime
 
             let p2Time = p2End - p2Start
             putStrLn $ printf "Part 2 " ++ timeString p2Time ++ ":"
-            putStrLn $ maybe "Unable to run Part 2!" show p2Res
+            putStrLn $ either (\(e :: SomeException) -> "Unable to run Part 2!\n" ++ show e) show p2Res
 
-            return (p1Res $> p1Time, p2Res $> p2Time)
+            return (eitherToMaybe p1Res $> p1Time, eitherToMaybe p2Res $> p2Time)
 
 
 timeString :: Integer -> String
