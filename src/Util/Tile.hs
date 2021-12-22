@@ -4,7 +4,7 @@ import qualified Data.Matrix as Matrix
 import           Data.Set    (Set)
 import qualified Data.Set    as Set
 import           Data.Vector (Vector)
-import qualified Data.Vector as Vec
+import qualified Data.Vector as Vector
 import           Util.Util
 
 data Tile = Tile {
@@ -35,7 +35,7 @@ getSides :: Tile -> Set (Vector Bool)
 getSides t = Set.fromList [getTop t, getBottom t, getLeft t, getRight t]
 
 getSidePerms :: Tile -> Set (Vector Bool)
-getSidePerms t = Set.union sides $ Set.map Vec.reverse sides
+getSidePerms t = Set.union sides $ Set.map Vector.reverse sides
   where sides = getSides t
 
 getInside :: Tile -> Matrix Bool

@@ -1,12 +1,12 @@
 module Main where
-import           Control.Monad
-import           Data.List
+import           Control.Monad      (unless, when)
+import           Data.List          (intercalate)
 import           Data.Map.Strict    (Map)
 import qualified Data.Map.Strict    as Map
-import           Data.Maybe
-import           System.Environment
-import           Text.Printf
-import           Text.Read
+import           Data.Maybe         (fromMaybe, mapMaybe)
+import           System.Environment (getArgs)
+import           Text.Printf        (printf)
+import           Text.Read          (readMaybe)
 
 {- ORMOLU_DISABLE -}
 import qualified Days.Day01         as Day01 (runDay)
@@ -82,10 +82,10 @@ printSummary results = do
     putStrLn "====== SUMMARY ======"
     let part1s = Map.mapKeys ((++".1") . show) $ fst <$> results
         part2s = Map.mapKeys ((++".2") . show) $ snd <$> results
-        parts = Map.toList $ part1s <> part2s
+        parts  = Map.toList $ part1s <> part2s
 
         fails = [p | (p, Nothing) <- parts]
-        fasts = [(p, t) | (p, Just t) <- parts, t < 10^12]
+        fasts = [(p, t) | (p, Just t) <- parts, t <  10^12]
         slows = [(p, t) | (p, Just t) <- parts, t >= 10^12]
 
         greatSuccess = null fails && null slows
