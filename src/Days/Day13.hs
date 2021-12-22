@@ -1,5 +1,4 @@
 module Days.Day13 where
-import           Control.DeepSeq (NFData)
 import           Data.Bifunctor  (bimap, first, second)
 import           Data.Foldable   (foldl')
 import           Data.List.Split (splitOn)
@@ -8,7 +7,6 @@ import qualified Data.Matrix     as Matrix
 import           Data.Set        (Set)
 import qualified Data.Set        as Set
 import           Data.Tuple      (swap)
-import           GHC.Generics    (Generic)
 import qualified Program.RunDay  as R (runDay)
 import           Util.NoQuotes   (NoQuotes (NoQuotes))
 import           Util.Util       (listToTuple, ppMatrix)
@@ -25,7 +23,7 @@ type Output2 = NoQuotes
 
 data Fold = X Int
           | Y Int
-          deriving (Eq, Ord, Show, Generic, NFData)
+          deriving (Eq, Ord, Show)
 
 parser :: String -> Input
 parser = bimap (Set.fromList . map (listToTuple . map read . splitOn ",") . lines) (map (parseFold . last . words) . lines) . listToTuple . splitOn "\n\n"

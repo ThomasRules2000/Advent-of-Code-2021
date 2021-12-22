@@ -1,9 +1,7 @@
 module Days.Day10 where
-import           Control.DeepSeq (NFData)
 import           Data.Bifunctor  (first, second)
 import           Data.Either     (lefts, rights)
 import           Data.List       (sort)
-import           GHC.Generics    (Generic)
 import qualified Program.RunDay  as R (runDay)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
@@ -16,13 +14,13 @@ type Output2 = Int
 
 data Bracket = Open  BracketType
              | Close BracketType
-             deriving (Eq, Ord, Show, Generic, NFData)
+             deriving (Eq, Ord, Show)
 
 data BracketType = Paren
                  | Square
                  | Brace
                  | Angled
-                 deriving (Eq, Ord, Show, Enum, Generic, NFData)
+                 deriving (Eq, Ord, Show, Enum)
 
 parser :: String -> Input
 parser = map (map readBracket) . lines

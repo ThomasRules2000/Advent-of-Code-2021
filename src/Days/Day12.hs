@@ -1,5 +1,4 @@
 module Days.Day12 where
-import           Control.DeepSeq (NFData)
 import           Data.Char       (isUpper)
 import           Data.List.Split (splitOn)
 import           Data.Map.Strict (Map)
@@ -7,7 +6,6 @@ import qualified Data.Map.Strict as Map
 import           Data.Set        (Set)
 import qualified Data.Set        as Set
 import           Data.Tuple      (swap)
-import           GHC.Generics    (Generic)
 import qualified Program.RunDay  as R (runDay)
 import           Util.Util       (listToTuple)
 
@@ -23,7 +21,7 @@ data Cave = Start
           | End
           | Small String
           | Big String
-          deriving (Eq, Ord, Show, Generic, NFData)
+          deriving (Eq, Ord, Show)
 
 parser :: String -> Input
 parser = Map.fromListWith (++)

@@ -1,8 +1,6 @@
 module Days.Day02 where
-import           Control.DeepSeq (NFData)
 import           Data.Bifunctor  (first, second)
 import           Data.Foldable   (foldl')
-import           GHC.Generics    (Generic)
 import qualified Program.RunDay  as R (runDay)
 
 runDay :: String -> IO (Maybe Integer, Maybe Integer)
@@ -10,7 +8,7 @@ runDay = R.runDay parser part1 part2
 
 data Move = Forward Int
           | Down Int
-          deriving (Eq, Ord, Show, Generic, NFData)
+          deriving (Eq, Ord, Show)
 
 type Input = [Move]
 

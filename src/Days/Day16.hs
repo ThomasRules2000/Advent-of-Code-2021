@@ -1,8 +1,6 @@
 module Days.Day16 where
-import           Control.DeepSeq (NFData)
 import           Data.Bifunctor  (bimap, first)
 import           Data.List       (uncons)
-import           GHC.Generics    (Generic)
 import qualified Program.RunDay  as R (runDay)
 import           Util.Util       (binToDec, hexToBin)
 
@@ -16,7 +14,7 @@ type Output2 = Int
 
 data Packet = Literal Int Int
             | Operator Int PacketType [Packet]
-            deriving (Eq, Ord, Show, Generic, NFData)
+            deriving (Eq, Ord, Show)
 
 data PacketType = Sum
                 | Product
@@ -26,7 +24,7 @@ data PacketType = Sum
                 | GreaterThan
                 | LessThan
                 | EqualTo
-                deriving (Eq, Ord, Show, Enum, Generic, NFData)
+                deriving (Eq, Ord, Show, Enum)
 
 parser :: String -> Input
 parser = fst . readPacket . hexToBin . head . lines

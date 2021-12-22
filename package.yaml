@@ -26,7 +26,6 @@ dependencies:
 - matrix
 - heap
 - extra
-- deepseq
 - unordered-containers
 - mtl
 

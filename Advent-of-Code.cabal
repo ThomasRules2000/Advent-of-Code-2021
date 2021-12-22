@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8eae0328b3f045d8a3c4457975fda46a1c55be5cc34a968c2b0462e7ffb9a0c8
+-- hash: 01f6211df7fe419961ac44d035fe9710b6396d05859b814dbd5a45950da8816f
 
 name:           Advent-of-Code
 version:        0.1.0.0
@@ -82,7 +82,6 @@ library
   build-depends:
       base >=4.7 && <5
     , containers
-    , deepseq
     , extra
     , heap
     , matrix
@@ -103,7 +102,6 @@ executable AOC-exe
       Advent-of-Code
     , base >=4.7 && <5
     , containers
-    , deepseq
     , extra
     , heap
     , matrix

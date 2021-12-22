@@ -1,10 +1,8 @@
 module Util.BinTree where
-import           Control.DeepSeq (NFData)
-import           GHC.Generics    (Generic)
 
 data BinTree a = Node (BinTree a) (BinTree a)
                | Leaf a
-               deriving (Eq, Ord, Generic, NFData, Functor, Foldable)
+               deriving (Eq, Ord, Functor, Foldable)
 
 instance Show a => Show (BinTree a) where
     show (Leaf x) = show x 
