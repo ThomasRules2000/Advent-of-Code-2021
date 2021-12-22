@@ -12,7 +12,7 @@ import           Data.Tuple      (swap)
 import qualified Program.RunDay  as R (runDay)
 import qualified Util.Map        as Map
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
 
 type Pos = (Int, Int)

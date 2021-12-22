@@ -5,7 +5,7 @@ import qualified Data.Map.Strict as Map
 import qualified Program.RunDay  as R (runDay)
 import           Util.Util       (listToTuple)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
 
 type Input = [Line]

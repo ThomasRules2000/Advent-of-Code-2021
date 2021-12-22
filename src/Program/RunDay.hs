@@ -6,13 +6,13 @@ import           Data.Functor      (($>))
 import           System.CPUTime    (getCPUTime)
 import           Text.Printf       (printf)
 
-runDay :: (Show out1, Show out2) => (String -> inp) -> (inp -> out1) -> (inp -> out2) -> String -> IO (Maybe Integer, Maybe Integer)
+runDay :: (Show out1, Show out2) => (String -> inp) -> (inp -> out1) -> (inp -> out2) -> String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
 runDay parser part1 part2 s = do
     parserStart <- getCPUTime
     file <- try $ readFile s >>= (evaluate . parser)
     parserEnd <- getCPUTime
     case file of
-        Left (e :: SomeException) -> putStrLn "Unable to parse input!" >> print e >> return (Nothing, Nothing)
+        Left (e :: SomeException) -> putStrLn "Unable to parse input!" >> print e $> (Nothing, Nothing, Nothing)
         Right input -> do
             let parserTime = parserEnd - parserStart
             putStrLn $ "Parser " ++ timeString parserTime
@@ -33,7 +33,7 @@ runDay parser part1 part2 s = do
             putStrLn $ printf "Part 2 " ++ timeString p2Time ++ ":"
             putStrLn $ either (\(e :: SomeException) -> "Unable to run Part 2!\n" ++ show e) show p2Res
 
-            return (eitherToMaybe p1Res $> p1Time, eitherToMaybe p2Res $> p2Time)
+            return (Just parserTime, eitherToMaybe p1Res $> p1Time, eitherToMaybe p2Res $> p2Time)
 
 
 timeString :: Integer -> String

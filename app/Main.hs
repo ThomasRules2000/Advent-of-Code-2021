@@ -4,11 +4,11 @@ import           Data.List          (intercalate)
 import           Data.Map.Strict    (Map)
 import qualified Data.Map.Strict    as Map
 import           Data.Maybe         (fromMaybe, mapMaybe)
+import           Data.Tuple.Extra   (first, fst3, snd3, thd3)
 import           System.Environment (getArgs)
 import           Text.Printf        (printf)
 import           Text.Read          (readMaybe)
 
-{- ORMOLU_DISABLE -}
 import qualified Days.Day01         as Day01 (runDay)
 import qualified Days.Day02         as Day02 (runDay)
 import qualified Days.Day03         as Day03 (runDay)
@@ -34,9 +34,8 @@ import qualified Days.Day22         as Day22 (runDay)
 import qualified Days.Day23         as Day23 (runDay)
 import qualified Days.Day24         as Day24 (runDay)
 import qualified Days.Day25         as Day25 (runDay)
-{- ORMOLU_ENABLE -}
 
-days :: [(String -> IO (Maybe Integer, Maybe Integer), String)]
+days :: [(String -> IO (Maybe Integer, Maybe Integer, Maybe Integer), String)]
 days = [
     (Day01.runDay, "input/Day01.txt"),
     (Day02.runDay, "input/Day02.txt"),
@@ -65,7 +64,7 @@ days = [
     (Day25.runDay, "input/Day25.txt")
     ]
 
-bigDays :: [(String -> IO (Maybe Integer, Maybe Integer), String)]
+bigDays :: [(String -> IO (Maybe Integer, Maybe Integer, Maybe Integer), String)]
 bigDays = [
     (Day01.runDay, "input/Day01_big.txt"),
     (Day02.runDay, "input/Day02_big.txt"),
@@ -94,7 +93,7 @@ bigDays = [
     (Day25.runDay, "input/Day25_big.txt")
     ]
 
-testDays :: [(String -> IO (Maybe Integer, Maybe Integer), String)]
+testDays :: [(String -> IO (Maybe Integer, Maybe Integer, Maybe Integer), String)]
 testDays = [
     (Day01.runDay, "input/Day01_test.txt"),
     (Day02.runDay, "input/Day02_test.txt"),
@@ -128,22 +127,39 @@ main = do
     args <- getArgs
     let toRun = if "-a" `elem` args then [1..25] else mapMaybe readMaybe args
     let ds | "--test" `elem` args = testDays
-           | "--big"  `elem` args = bigDays 
+           | "--big"  `elem` args = bigDays
            | otherwise            = days
     times <- Map.fromList . zip toRun <$> mapM (\arg -> uncurry (performDay arg) $ fromMaybe (error $ printf "Day %d not found" arg) $ lookup arg (zip [1..] ds)) toRun
     printSummary times
 
-performDay :: Int -> (String -> IO (Maybe Integer, Maybe Integer)) -> String -> IO (Maybe Integer, Maybe Integer)
+performDay :: Int -> (String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)) -> String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
 performDay day func file = do
     putStrLn $ printf "===== DAY %d =====" day
     func file
 
-printSummary :: Map Int (Maybe Integer, Maybe Integer) -> IO ()
+data Day = Day Int Part
+    deriving (Eq, Ord)
+
+instance Show Day where
+    show (Day d p) = show d ++ "." ++ show p
+
+data Part = Parser
+          | One
+          | Two
+          deriving (Eq, Ord)
+
+instance Show Part where
+    show Parser = "p"
+    show One    = "1"
+    show Two    = "2"
+
+printSummary :: Map Int (Maybe Integer, Maybe Integer, Maybe Integer) -> IO ()
 printSummary results = do
     putStrLn "====== SUMMARY ======"
-    let part1s = Map.mapKeys ((++".1") . show) $ fst <$> results
-        part2s = Map.mapKeys ((++".2") . show) $ snd <$> results
-        parts  = Map.toList $ part1s <> part2s
+    let parsers = Map.mapKeys (`Day` Parser) $ fst3 <$> results
+        part1s  = Map.mapKeys (`Day` One)    $ snd3 <$> results
+        part2s  = Map.mapKeys (`Day` Two)    $ thd3 <$> results
+        parts   = map (first show) $ Map.toList $ parsers <> part1s <> part2s
 
         fails = [p | (p, Nothing) <- parts]
         fasts = [(p, t) | (p, Just t) <- parts, t <  10^12]

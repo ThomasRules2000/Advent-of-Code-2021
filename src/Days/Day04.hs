@@ -5,7 +5,7 @@ import           Data.List.Split (splitOn)
 import           Data.Maybe      (fromJust)
 import qualified Program.RunDay  as R (runDay)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
 
 type Input = ([Int], [Board])

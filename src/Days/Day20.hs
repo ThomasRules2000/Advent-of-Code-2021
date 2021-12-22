@@ -11,7 +11,7 @@ import qualified Program.RunDay      as R (runDay)
 import qualified Util.Map            as Map
 import           Util.Util           (binToDec, listToTuple)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
 
 type Pos = (Int, Int)

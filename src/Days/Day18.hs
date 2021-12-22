@@ -7,7 +7,7 @@ import qualified Program.RunDay      as R (runDay)
 import           Util.BinTree        (BinTree (..), applyLeft, applyRight,
                                       maxDepth)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
 runDay = R.runDay parser part1 part2
 
 type Input = [SnailFish]
