@@ -1,9 +1,10 @@
 module Days.Day02 where
-import           Data.Bifunctor  (first, second)
-import           Data.Foldable   (foldl')
-import qualified Program.RunDay  as R (runDay)
+import           Data.Bifunctor (first, second)
+import           Data.Foldable  (foldl')
+import qualified Program.RunDay as R (runDay)
+import           System.Clock   (TimeSpec)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 runDay = R.runDay parser part1 part2
 
 data Move = Forward Int

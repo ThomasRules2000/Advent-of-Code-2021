@@ -1,10 +1,11 @@
 module Days.Day16 where
-import           Data.Bifunctor  (bimap, first)
-import           Data.List       (uncons)
-import qualified Program.RunDay  as R (runDay)
-import           Util.Util       (binToDec, hexToBin)
+import           Data.Bifunctor (bimap, first)
+import           Data.List      (uncons)
+import qualified Program.RunDay as R (runDay)
+import           System.Clock   (TimeSpec)
+import           Util.Util      (binToDec, hexToBin)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 runDay = R.runDay parser part1 part2
 
 type Input = Packet

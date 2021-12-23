@@ -6,9 +6,10 @@ import qualified Data.Map.Strict as Map
 import           Data.Set        (Set)
 import qualified Data.Set        as Set
 import qualified Program.RunDay  as R (runDay)
-import qualified Util.Map as Map
+import           System.Clock    (TimeSpec)
+import qualified Util.Map        as Map
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 runDay = R.runDay parser part1 part2
 
 type Pos = (Int, Int)
@@ -29,7 +30,7 @@ doCycle = getFlashes Set.empty . fmap (+1)
 
 getFlashes :: Set Pos -> Map Pos Int -> (Int, Map Pos Int)
 getFlashes flashes octos
-    | null newFlashes = (Set.size flashes, Map.fromSet (const 0) flashes Map./\ octos)
+    | null newFlashes = (Set.size flashes, Map.fromSet (const 0) flashes Map.\/ octos)
     | otherwise = getFlashes (Set.union flashes newFlashes) $ foldl flash octos newFlashes
     where
         newFlashes = Map.keysSet (Map.filter (>9) octos) Set.\\ flashes

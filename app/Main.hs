@@ -5,6 +5,9 @@ import           Data.Map.Strict    (Map)
 import qualified Data.Map.Strict    as Map
 import           Data.Maybe         (fromMaybe, mapMaybe)
 import           Data.Tuple.Extra   (first, fst3, snd3, thd3)
+import           Formatting         (formatToString)
+import           Formatting.Clock   (timeSpecs)
+import           System.Clock       (TimeSpec (..))
 import           System.Environment (getArgs)
 import           Text.Printf        (printf)
 import           Text.Read          (readMaybe)
@@ -35,7 +38,7 @@ import qualified Days.Day23         as Day23 (runDay)
 import qualified Days.Day24         as Day24 (runDay)
 import qualified Days.Day25         as Day25 (runDay)
 
-days :: [(String -> IO (Maybe Integer, Maybe Integer, Maybe Integer), String)]
+days :: [(String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec), String)]
 days = [
     (Day01.runDay, "input/Day01.txt"),
     (Day02.runDay, "input/Day02.txt"),
@@ -64,7 +67,7 @@ days = [
     (Day25.runDay, "input/Day25.txt")
     ]
 
-bigDays :: [(String -> IO (Maybe Integer, Maybe Integer, Maybe Integer), String)]
+bigDays :: [(String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec), String)]
 bigDays = [
     (Day01.runDay, "input/Day01_big.txt"),
     (Day02.runDay, "input/Day02_big.txt"),
@@ -93,7 +96,7 @@ bigDays = [
     (Day25.runDay, "input/Day25_big.txt")
     ]
 
-testDays :: [(String -> IO (Maybe Integer, Maybe Integer, Maybe Integer), String)]
+testDays :: [(String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec), String)]
 testDays = [
     (Day01.runDay, "input/Day01_test.txt"),
     (Day02.runDay, "input/Day02_test.txt"),
@@ -132,7 +135,7 @@ main = do
     times <- Map.fromList . zip toRun <$> mapM (\arg -> uncurry (performDay arg) $ fromMaybe (error $ printf "Day %d not found" arg) $ lookup arg (zip [1..] ds)) toRun
     printSummary times
 
-performDay :: Int -> (String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)) -> String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+performDay :: Int -> (String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)) -> String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 performDay day func file = do
     putStrLn $ printf "===== DAY %d =====" day
     func file
@@ -153,7 +156,7 @@ instance Show Part where
     show One    = "1"
     show Two    = "2"
 
-printSummary :: Map Int (Maybe Integer, Maybe Integer, Maybe Integer) -> IO ()
+printSummary :: Map Int (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec) -> IO ()
 printSummary results = do
     putStrLn "====== SUMMARY ======"
     let parsers = Map.mapKeys (`Day` Parser) $ fst3 <$> results
@@ -162,8 +165,8 @@ printSummary results = do
         parts   = map (first show) $ Map.toList $ parsers <> part1s <> part2s
 
         fails = [p | (p, Nothing) <- parts]
-        fasts = [(p, t) | (p, Just t) <- parts, t <  10^12]
-        slows = [(p, t) | (p, Just t) <- parts, t >= 10^12]
+        fasts = [(p, t) | (p, Just t) <- parts, t <  TimeSpec{sec=1, nsec=0}]
+        slows = [(p, t) | (p, Just t) <- parts, t >= TimeSpec{sec=1, nsec=0}]
 
         greatSuccess = null fails && null slows
         nFails = if null fails then "No" else show $ length fails
@@ -179,4 +182,5 @@ printSummary results = do
             putStrLn $ "    " ++ intercalate ", " fails
         unless (null slows) $ do
             putStrLn $ printf "  %s parts took longer than 1s" nSlows
-            putStrLn $ "    " ++ intercalate ", " (map (uncurry (printf "%s (%.2fs)")) $ fmap ((/10^12) . fromIntegral :: Integer -> Double) <$> slows)
+            putStrLn $ "    " ++ intercalate ", " (map (uncurry (printf "%s (%s)")) $ fmap (formatToString timeSpecs 0) <$> slows)
+    putStrLn $ "Total Time: " ++ formatToString timeSpecs 0 (sum $ map snd $ fasts ++ slows)

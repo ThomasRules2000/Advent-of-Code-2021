@@ -4,10 +4,11 @@ import           Data.Bifunctor      (first, second)
 import           Data.Char           (digitToInt, isDigit)
 import           Data.Functor        (($>))
 import qualified Program.RunDay      as R (runDay)
+import           System.Clock        (TimeSpec)
 import           Util.BinTree        (BinTree (..), applyLeft, applyRight,
                                       maxDepth)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 runDay = R.runDay parser part1 part2
 
 type Input = [SnailFish]

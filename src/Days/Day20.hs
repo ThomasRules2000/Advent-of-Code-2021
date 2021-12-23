@@ -8,10 +8,11 @@ import qualified Data.Set            as Set
 import           Data.Vector.Unboxed (Vector)
 import qualified Data.Vector.Unboxed as Vector
 import qualified Program.RunDay      as R (runDay)
+import           System.Clock        (TimeSpec)
 import qualified Util.Map            as Map
 import           Util.Util           (binToDec, listToTuple)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 runDay = R.runDay parser part1 part2
 
 type Pos = (Int, Int)

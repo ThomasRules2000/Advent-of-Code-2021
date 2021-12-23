@@ -1,10 +1,11 @@
 module Days.Day10 where
-import           Data.Bifunctor  (first, second)
-import           Data.Either     (lefts, rights)
-import           Data.List       (sort)
-import qualified Program.RunDay  as R (runDay)
+import           Data.Bifunctor (first, second)
+import           Data.Either    (lefts, rights)
+import           Data.List      (sort)
+import qualified Program.RunDay as R (runDay)
+import           System.Clock   (TimeSpec)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 runDay = R.runDay parser part1 part2
 
 type Input = [[Bracket]]

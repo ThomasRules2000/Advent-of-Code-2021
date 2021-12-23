@@ -3,9 +3,10 @@ import           Data.List.Split (splitOn)
 import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import qualified Program.RunDay  as R (runDay)
+import           System.Clock    (TimeSpec)
 import           Util.Util       (listToTuple)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 runDay = R.runDay parser part1 part2
 
 type Input = [Line]

@@ -8,9 +8,10 @@ import           Data.Maybe      (catMaybes, mapMaybe)
 import           Data.Set        (Set)
 import qualified Data.Set        as Set
 import qualified Program.RunDay  as R (runDay)
+import           System.Clock    (TimeSpec)
 import qualified Util.Map        as Map
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 runDay = R.runDay parser part1 part2
 
 type Pos = (Int, Int)

@@ -4,8 +4,9 @@ import           Data.List       (transpose, uncons)
 import           Data.List.Split (splitOn)
 import           Data.Maybe      (fromJust)
 import qualified Program.RunDay  as R (runDay)
+import           System.Clock    (TimeSpec)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 runDay = R.runDay parser part1 part2
 
 type Input = ([Int], [Board])

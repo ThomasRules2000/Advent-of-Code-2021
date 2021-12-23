@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 01f6211df7fe419961ac44d035fe9710b6396d05859b814dbd5a45950da8816f
+-- hash: db402fcc979bec2970241f012b182a1377411ad730976d2f079565620c83bbab
 
 name:           Advent-of-Code
 version:        0.1.0.0
@@ -81,8 +81,10 @@ library
       RecordWildCards
   build-depends:
       base >=4.7 && <5
+    , clock
     , containers
     , extra
+    , formatting
     , heap
     , matrix
     , mtl
@@ -101,8 +103,10 @@ executable AOC-exe
   build-depends:
       Advent-of-Code
     , base >=4.7 && <5
+    , clock
     , containers
     , extra
+    , formatting
     , heap
     , matrix
     , mtl

@@ -28,6 +28,8 @@ dependencies:
 - extra
 - unordered-containers
 - mtl
+- clock
+- formatting
 
 library:
   source-dirs: src

@@ -2,9 +2,10 @@ module Days.Day03 where
 import           Data.List        (transpose)
 import           Data.Tuple.Extra (both)
 import qualified Program.RunDay   as R (runDay)
+import           System.Clock     (TimeSpec)
 import           Util.Util        (binToDec)
 
-runDay :: String -> IO (Maybe Integer, Maybe Integer, Maybe Integer)
+runDay :: String -> IO (Maybe TimeSpec, Maybe TimeSpec, Maybe TimeSpec)
 runDay = R.runDay parser part1 part2
 
 type Input = [[Bool]]
