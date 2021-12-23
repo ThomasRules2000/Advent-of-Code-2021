@@ -81,3 +81,9 @@ traceTag s x = trace (s <> show x) x
 
 sumTuples :: (Foldable t, Num a, Num b) => t (a, b) -> (a, b)
 sumTuples = foldl' (uncurry bimap . bimap (+) (+)) (0, 0)
+
+liftTupSet :: (Ord a, Ord b) => (Set a, b) -> Set (a,b)
+liftTupSet (s, x) = Set.map (,x) s
+
+liftTup :: Functor f => (f a, b) -> f (a, b)
+liftTup (xs, y) = (,y) <$> xs
