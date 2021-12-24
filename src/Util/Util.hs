@@ -17,6 +17,9 @@ listToTuple [x,y] = (x, y)
 listToTuple3 :: [a] -> (a, a, a)
 listToTuple3 [x, y, z] = (x, y, z)
 
+listToTuple4 :: [a] -> (a, a, a, a)
+listToTuple4 [w, x, y, z] = (w, x, y, z)
+
 trimap :: (a -> a') -> (b -> b') -> (c -> c') -> (a, b, c) -> (a', b', c')
 trimap f g h (x, y, z) = (f x, g y, h z)
 
@@ -87,3 +90,6 @@ liftTupSet (s, x) = Set.map (,x) s
 
 liftTup :: Functor f => (f a, b) -> f (a, b)
 liftTup (xs, y) = (,y) <$> xs
+
+uncurry4 :: (a -> b -> c -> d -> e) -> (a, b, c, d) -> e
+uncurry4 f (w, x, y, z) = f w x y z
