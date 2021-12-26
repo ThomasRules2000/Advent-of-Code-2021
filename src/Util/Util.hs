@@ -1,5 +1,5 @@
 module Util.Util where
-import           Data.Bifunctor  (first, bimap)
+import           Data.Bifunctor  (bimap, first)
 import           Data.Char       (toLower)
 import           Data.Foldable   (foldl')
 import           Data.Map.Strict (Map)
@@ -93,3 +93,16 @@ liftTup (xs, y) = (,y) <$> xs
 
 uncurry4 :: (a -> b -> c -> d -> e) -> (a, b, c, d) -> e
 uncurry4 f (w, x, y, z) = f w x y z
+
+imap :: (Int -> a -> b) -> [a] -> [b]
+imap f = zipWith f [0..]
+
+checkN :: (a -> Bool) -> Int -> [a] -> Bool
+checkN _ 0 _      = True
+checkN _ _ []     = True
+checkN p n (x:xs) = p x && checkN p n xs
+
+setAt :: Int -> a -> [a] -> [a]
+setAt _ _ []     = []
+setAt 0 x (y:ys) = x:ys
+setAt n x (y:ys) = y:setAt (n-1) x ys
